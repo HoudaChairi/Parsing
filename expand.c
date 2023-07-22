@@ -6,7 +6,7 @@
 /*   By: hchairi <hchairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/04 17:07:44 by hchairi           #+#    #+#             */
-/*   Updated: 2023/07/18 15:27:09 by hchairi          ###   ########.fr       */
+/*   Updated: 2023/07/22 12:18:41 by hchairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,9 @@ char	*get_node_value(t_env *head, char *var)
 		return (ft_itoa(g_all.status_val));
 	while (curr != NULL)
 	{
-		// cherche variable jusqu'a '='
 		if (ft_strncmp(curr->s, var, ft_strlen(var)) == 0
 			&& curr->s[ft_strlen(var)] == '=')
-				return (ft_substr(curr->s, ft_strlen(var)
+			return (ft_substr(curr->s, ft_strlen(var)
 					+ 1, ft_strlen(curr->s) - ft_strlen(var)));
 		curr = curr->next;
 	}
@@ -55,8 +54,7 @@ void	rm_quotes(void)
 
 	node = g_all.head;
 	if (node && node->quotes == 0
-		&& (node->type == DOUBLES_QUOTES || node->type == SINGLE_QUOTES)
-		&& node->next)
+		&& (node->type == D_Q || node->type == S_Q) && node->next)
 	{
 		node = g_all.head->next;
 		free(g_all.head->valeur);
@@ -66,8 +64,7 @@ void	rm_quotes(void)
 	while (node && node->next)
 	{
 		if (node && node->next && node->next->quotes == 0
-			&& (node->next->type == DOUBLES_QUOTES
-				|| node->next->type == SINGLE_QUOTES))
+			&& (node->next->type == D_Q || node->next->type == S_Q))
 			free_node_exp(node);
 		else if (node->next)
 			node = node->next;
@@ -76,7 +73,6 @@ void	rm_quotes(void)
 
 t_nodes	*cas_expand(t_nodes *head, char *expand_val, t_nodes *save, int i)
 {
-	int		len;
 	char	*s;
 
 	if (head->type == DOLLAR && !head->next)
@@ -95,11 +91,10 @@ t_nodes	*cas_expand(t_nodes *head, char *expand_val, t_nodes *save, int i)
 	if (head && head->next && head->type == DOLLAR
 		&& head->quotes != 1 && !char_special(head->next->valeur[0]))
 	{
-		len = ft_strlen(head->next->valeur);
-		s = ft_substr(head->next->valeur, i, len);
+		s = ft_substr(head->next->valeur, i, ft_strlen(head->next->valeur));
 		free(head->valeur);
 		head->valeur = ft_strjoin(expand_val, s, 2);
-		free_node_exp(head); // free node qui est apres dollar
+		free_node_exp(head);
 	}
 	return (head);
 }

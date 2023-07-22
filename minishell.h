@@ -6,7 +6,7 @@
 /*   By: hchairi <hchairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/18 12:37:08 by hchairi           #+#    #+#             */
-/*   Updated: 2023/07/18 13:52:46 by hchairi          ###   ########.fr       */
+/*   Updated: 2023/07/22 15:23:52 by hchairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,15 @@
 # define MINISHELL_H
 
 # include <stdio.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <stdlib.h>
 # include <fcntl.h>
 # include "./libft/libft.h"
+
+# include <unistd.h> // 
+# include <string.h> //
 
 # define PIPES 1
 # define STRING 2
@@ -31,20 +35,27 @@
 # define SPACES 9
 # define OUT_FILE 10
 # define IN_FILE 11
-# define DOUBLES_QUOTES 12
-# define SINGLE_QUOTES 13
+# define D_Q 12
+# define S_Q 13
 # define S_ERR 404
 
 typedef struct s_all
 {
-	char			*line;
-	int				status_val;
-	struct s_nodes	*head;
-	struct s_cmd	*cmd;
+	char				*line;
+	int					status_val;
+	int					k;
+	int					h;
+	int					dup_z;
+	int					dup_o;
+	struct sigaction	act;
+	struct s_nodes		*head;
+	struct s_env		*env;
+	struct s_cmd		*cmd;
 }	t_all;
 
 typedef struct s_nodes
 {
+	int				check;
 	int				quotes;
 	int				type;
 	char			*valeur;
@@ -68,7 +79,6 @@ typedef struct s_cmd
 t_all	g_all;
 
 void	split_function(void);
-t_env	*lstnew(char *content);
 void	ft_lstaddback(t_nodes *node, t_nodes *new);
 void	save_env(t_env **node, char **envr);
 void	create_list(char *valeur, int type);
@@ -94,7 +104,7 @@ void	free_node_exp(t_nodes *head);
 void	rm_spaces(void);
 void	link_strings(void);
 void	link_tous(void);
-void	pipe_node(void);
+void	pipe_node(t_env *env);
 void	print_data(void);
 void	free_space(t_nodes **head);
 t_nodes	*lstnew_expand(char *content);
@@ -105,7 +115,13 @@ t_nodes	*ft_lstlast(t_nodes *lst);
 void	free_space(t_nodes **head);
 void	save_list(t_nodes **node, char *val);
 int		check_space(char *value);
-void	redirect(t_cmd *cmd);
-void	lstclear_env(t_env *node);
+void	redirect(t_cmd *cmd, t_env *env);
+void	lstclear_env();
 t_nodes	*get_next(t_nodes *node);
+void	expand_herdoc(void);
+void	depart_seg(void);
+void	herdoc(t_nodes	*node, t_cmd *cmd, char *del, t_env *env);
+void	initial(char **envr);
+void	ft_readline(void);
+void	suite_parsing(void);
 #endif

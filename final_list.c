@@ -6,7 +6,7 @@
 /*   By: hchairi <hchairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/15 16:22:49 by hchairi           #+#    #+#             */
-/*   Updated: 2023/07/15 20:36:24 by hchairi          ###   ########.fr       */
+/*   Updated: 2023/07/19 21:38:20 by hchairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ void	fill_data(t_nodes **node, char **data)
 	lstaddback_cmd(lstnew_cmd(data));
 }
 
-void	pipe_node(void)
+void	pipe_node(t_env *env)
 {
 	t_nodes	*node;
 	char	**data;
@@ -88,5 +88,5 @@ void	pipe_node(void)
 		if (node)
 			node = node->next;
 	}
-	redirect(g_all.cmd);
+	redirect(g_all.cmd, env);
 }

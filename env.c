@@ -6,11 +6,29 @@
 /*   By: hchairi <hchairi@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/27 12:20:01 by hchairi           #+#    #+#             */
-/*   Updated: 2023/07/14 16:56:31 by hchairi          ###   ########.fr       */
+/*   Updated: 2023/07/22 15:08:02 by hchairi          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void	lstclear_env(void)
+{
+	t_env	*tmp;
+	t_env	*tmp_next;
+
+	if (!g_all.env)
+		return ;
+	tmp = g_all.env;
+	while (tmp)
+	{
+		tmp_next = tmp->next;
+		free (tmp->s);
+		free (tmp);
+		tmp = tmp_next;
+	}
+	g_all.env = NULL;
+}
 
 t_env	*ft_lstnew(char *content)
 {
