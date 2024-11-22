@@ -1,4 +1,4 @@
-# Mini Parsing 📜
+# Parsing 📜
 
 This repository contains the **parsing module** for the **minishell** team project at 42 School.  
 The parsing part is responsible for interpreting user input, handling tokens, and preparing the data for execution in the shell environment.
